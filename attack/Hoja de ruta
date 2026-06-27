@@ -1,0 +1,71 @@
+Los últimos están en las carpetas que dicen 8 behavs.
+Para claves falta hacer el modelo de ocurrencia que 
+no considera interacción año * behav, solo debe haber eff 
+random del año. Para eso hay que editar bastante los códigos
+usados para madres.
+
+En cuanto a número de ataques, a las crías las atacan más en 
+TF_UW que en IPA_S.
+En cuanto a attack p, es muy alta en IPA_S para keep attacking,
+pero para start attacking hay poca variación, y se maximiza en TF_S.
+
+Con madres es bastante claro el eff de la posición, pero el comportamiento
+no parece tener un eff muy grande, salvo con número de ataques, que 
+es muy alto en IPA_S.
+
+IMPORTANTE: CORREGIR EL FOLLOW ID PARA QUE QUEDE ORDENADO, IMPORTANTE PARA
+EL POSTERIOR CHECK. ESTÁ BIEN EN CALVES_OCCURRENCE, EN LOS DEMÁS DEBE ESTAR MAL.
+(OJO, EN REALIDAD PUEDE QUE ESE BUG NO TENGA EFECTO, NO DEBERÍA SER TAN GRAVE).
+
+
+------- 2022-04-13
+
+
+Sería ideal poder mostrar en un solo plot la eficiencia defensiva. 
+Por un lado, quizás podemos juntar el "start attacking" con el "keep attacking"
+usando el vector de estado estacionario para cada behaviour.
+
+Luego, podemos calcular la esperanza del número de ataques usando esa prob
+y la esperanza del número de ataques cuando fueron atacados 
+(esperanza de un hurdle model). 
+
+La desventaja de eso es que puede haber patrones de ataque interesantes que se pierdan.
+Igual intento y veo qué pasa.
+
+Comienzo con crías, que es más simple el code.
+(Eso fue bien)
+
+Ahora hago lo mismo con madres: uso un modelo donde no esté la spline por años
+(mothers_8 behavs), en donde el año será solo un random effect. Copio código de crías.
+Cuidado.
+
+---------- 2022-05-14
+
+TAREAAAA
+
+Parece que todo eso anduvo bien. Solo quedaría calcular el steady states 
+de occurrence in mothers para el modelo que tiene la spline. Luego 
+unificar plots y ya.
+
+En mothers2 puse un modelo de count muy simple queriendo ver si ajustaba mejor.
+No funcionó. (Se puede borrar luego)
+
+---------
+2022-10-19
+
+Aparentemente en algún momento preferí ajustar un modelo para madres (occurrence)
+sin spline. Sin embargo, me parece más limpio hacer un solo modelo, y mostrar
+la predicción promediando años. Lo malo es que ese promedio de años es el promedio
+de los años observados, y no el promedio incondicional al año. 
+Pero como todo ha variado poco entre años, no me parece tan grave. 
+
+Hay mucho código en attack/mothers que podría reciclar. 
+
+
+
+Done, terminé con el steady para madres y lo de count para madres, 
+
+ahora rehacer eso para crías (debería ser breve)
+
+Luego juntar plots con los de count, madres y crías.
+

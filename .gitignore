@@ -1,0 +1,14 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Private data + heavy model objects live OUTSIDE git, in an Insync-synced
+# "srw_behaviour-store" folder, symlinked into the repo by setup.sh (request the
+# data from the authors — see README). Ignored by bare name so the symlinks
+# themselves are never committed (a trailing-slash pattern would not match one).
+data
+models
+
+# Local machine-specific store location (consumed by setup.sh)
+.local-paths

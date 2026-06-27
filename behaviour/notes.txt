@@ -1,0 +1,37 @@
+Calves model did not consider interannual variation in some parameters, and not with a spline. 
+Having 9 years, we could do it. 
+Raneff + spline with 2 basis functions + intercept, right?
+
+En la explicación del modelo está redundante la definición de límites para psi y tau. 
+Falta explicar el modelo de crías, así que no sé exactamente qué hice con el modelo de crías :/
+
+Me parece sensato probar casi el mismo modelo y listo. El de madres fue estimado con 15 años... Si estimamos lo mismo con 9 años de crías capaz andamos bien. 
+Hay que tener cuidado de crear las variables equivalentes para la función de psi (increase). con calf_only y eso. 
+
+En calves no hay spline sobre alpha y beta, sólo raneff.
+z dynamics parameters are fixed, do not vary among years.
+
+Agregar spline a alpha y agregar spline a zpars en calves.
+Quizás lo más fácil sea copiar el modelo de madres y editar la función de z
+(ojo con las variables calf_only y eso; hay que hacer un espejo). 
+La spline sobre alphas debería ser de la misma dim que la spline de z (int, slope, quad).
+Para los z params usar la misma previa que en madres.
+
+El matsup tiene un par de errores, pero está bastante bien.
+
+VOLVER A CORRER EL MODELO DE MADRES CON K MÁS ALTO EN LAS SPLINES;
+PARA UN RANGO DE 30 AÑOS, CON 19 DATOS, PODRÍAMOS USAR 5 BASIS FUNCTIONS.
+The model was ran using Bz = 3 (quad, lin, int) for z params. Now, it uses Bz = 5,
+which makes a spline of 4 non-linear basis functions and an intercept, just like
+for the tmat parameters. The files were saved named --lowB. The uptdated ones will
+have normal name. Run this after resolving problems with calves model.
+
+
+CALVES ----------------------------------------------------------------------
+
+Editions
+behaviour_calves_analysis_notYear.R will be the old code, with no year effects.
+behaviour_calves_model_notYear.stan will be the corresponding stan model.
+
+New files have the nominal name, but will inherit from the mothers' script.
+
