@@ -24,22 +24,45 @@ work happens in `behaviour/` and `plots/`.
 
 ## Task workflow — read this first
 
-Most tasks are written in the **Google Docs paper draft** we use as the working
-manuscript:
+Most tasks are written in the **manuscript itself**, a Word file kept in the
+Insync folder (outside this repo):
 
-<https://docs.google.com/document/d/1FaTxfsi65lnKZ0DcWaMkfEj42fSK54IWUQDJYMcHneQ/edit>
+```
+/home/ivan/Insync/Whales/Behaviour/Paper/srw_behaviour_paper.docx
+```
 
-Instructions addressed to you are embedded inline in that document in the form:
+**This is the working manuscript.** The Google Docs draft it came from has been
+abandoned — do not read or write it, and ignore the `.gddoc` pointer sitting next
+to the file above. If a task refers to "the doc", "el doc", "the draft" or "el
+paper", it means this `.docx`.
+
+Instructions addressed to you are embedded inline in it, in the form:
 
 ```
 [Claude, task-description]
 ```
 
-**Always in square brackets, always naming Claude first** — this is the
-convention the document itself states.
+**Always in square brackets, always naming Claude first** — the convention the
+manuscript itself states, adding that plain square brackets are not used for
+anything else, so a `[…]` is unambiguous. The instructions are usually Spanish
+even though the surrounding text is English.
 
-When asked to work from the draft, read the doc (via the Google Drive
-integration), find the `[Claude, …]` markers, and act on them.
+When asked to work from the draft, read the file, find the `[Claude, …]` markers,
+and act on them.
+
+### Reading and writing the .docx
+
+A `.docx` is a zip. Read it by extracting the text from `word/document.xml`
+(paragraphs are `<w:p>`, text runs are `<w:t>`); `word/media/` holds its images.
+There is no need for the Google Drive connector any more.
+
+**Do not rewrite the `.docx` in place unless explicitly asked.** Editing the XML
+by hand risks damaging formatting, images, comments and tracked changes in a file
+the co-authors are working on. By default, deliver the result of a `[Claude, …]`
+task in the terminal (or as a repo file), quoting the marker it answers so it is
+obvious where the text belongs, and let the user paste it in — using Word's
+tracked changes or a colour if the edit needs to be visible. Never claim an edit
+was made in the manuscript when the text was only printed here.
 
 ### Language: read Spanish, think and write English
 
@@ -53,21 +76,6 @@ always English, whatever the language of the instruction that asked for it. Repl
 to the user in the language they wrote in, but never let Spanish source material
 carry through into the manuscript.
 
-### The doc is read-only for Claude
-
-The Google Drive connector can **read** the document (`read_file_content`, which
-also returns comment threads) but **cannot write to it**. Its `update_file` tool
-only changes metadata — title and parent folder — and there is no access to the
-Google Docs API, so Claude cannot insert text, let alone apply colours,
-highlights or Suggesting-mode edits inside the doc.
-
-Therefore: never claim an edit was made in the doc. Deliver the result of a
-`[Claude, …]` task in the terminal (or as a repo file), formatted so it can be
-pasted into the draft, and quote the marker being answered so it is obvious which
-task the text belongs to. The person then pastes it in — and, if edits need to be
-visible, does so with Google Docs' own **Suggesting** mode or a colour, which
-tracks authorship far better than anything Claude could mark by hand.
-
 ### Reference for the writing — "la tesis"
 
 When writing or revising manuscript text, the best reference for tone, structure
@@ -80,7 +88,7 @@ Marón and co-directed by Mariano Sironi:
 /home/ivan/Insync/Whales/Behaviour/Paper/Manuscrito_MPiotto_ACTUALIZADO_tesis-grado.docx
 ```
 
-In the Google Docs draft the user refers to it as **"la tesis"** (or similar) —
+In the manuscript the user refers to it as **"la tesis"** (or similar) —
 that is this file. It covers the same study system, and **what we are doing now
 is almost, but not exactly, the same**: follow it for framing, terminology and
 references, but always check the current analysis before carrying over a
@@ -91,20 +99,12 @@ it by extracting the text from `word/document.xml` inside the `.docx` (it is a
 zip) rather than trying to open it directly. Reference it whenever it helps.
 
 The same folder, `~/Insync/Whales/Behaviour/Paper/`, holds secondary material
-worth consulting when useful: `srw_behaviour_paper.gddoc` (the local pointer to
-the Google Docs draft above), several older idea/results drafts (`behaviour ideas
-y resultados 2022-*.doc`, `borrador ideas 2025-02-14.doc`, `effects and time
-2022-05-06.doc`) and `behaviour reclassification.xlsx`. These are older than the
-current analysis — treat them as history, not as specification.
-
-**Access requirement:** reading the doc needs the Google Drive connector to be
-authorized as a Google account that the doc is shared with. The doc is owned by a
-different Google account, so the user must (a) share it with the Google account
-the connector signs in as — `ivanbarbera93@gmail.com` — and (b) authorize the
-connector as that same account (`/mcp`). There is no "Claude" Google identity; the
-file is read as whichever Google account approves the OAuth flow. If a Drive call
-returns a token/authorization error, ask the user to re-authorize with `/mcp`
-(restarting the session may be needed for a refreshed token to take effect).
+worth consulting when useful: several older idea/results drafts (`behaviour
+ideas y resultados 2022-*.doc`, `borrador ideas 2025-02-14.doc`, `effects and
+time 2022-05-06.doc`) and `behaviour reclassification.xlsx`. These are older than
+the current analysis — treat them as history, not as specification. The
+`srw_behaviour_paper.gddoc` in that folder is the dead Google Docs pointer;
+ignore it.
 
 ## Repository layout & the data/model store (important)
 
