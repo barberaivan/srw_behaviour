@@ -12,7 +12,15 @@ Valdés, Argentina. The work supports a manuscript in preparation. Two analyses:
   mothers and calves, plus behaviour imputation and predictions.
 - `attack/` — kelp-gull attack **occurrence** and **intensity** models
   (mothers and calves). See `attack/Hoja de ruta` for the model roadmap (Spanish).
+  **Not in active development** — see below.
 - `plots/` — figures combining mothers and calves results.
+
+### The attack analysis is not in active development
+
+The current plan is **not to include the attack side in the paper**, so `attack/`
+is dormant: keep it in the repo for reference, but do not extend, refactor or
+re-run it, and do not spend effort tidying it, unless explicitly asked. Active
+work happens in `behaviour/` and `plots/`.
 
 ## Task workflow — read this first
 
@@ -80,7 +88,11 @@ saves the path to gitignored `.local-paths`). See `README.md` for details.
 
 ## Housekeeping
 
-- Pending tidy-up tasks (obsolete model variants, name mismatches) are tracked in
-  `CLEANUP.md`.
+- Open threads for the manuscript are tracked in `ROADMAP.md` at the repo root.
+  The paper is iterative — co-authors ask for things as it goes — so items there
+  get done **as needed**, not as a checklist to burn down. It also records
+  decisions already settled, so the reasoning is not rediscovered later.
+- Attack-specific open decisions live in `attack/README.md` (that analysis is
+  dormant — see above).
 - Commit/push only when asked. The remote is SSH
   (`git@github.com:barberaivan/srw_behaviour.git`); pushing does not prompt.

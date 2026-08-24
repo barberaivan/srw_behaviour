@@ -99,4 +99,6 @@ models require **cmdstanr**/**rstan** and are computationally heavy.
 
 ---
 
-See [`CLEANUP.md`](CLEANUP.md) for known tidy-up tasks still pending.
+See [`ROADMAP.md`](ROADMAP.md) for open threads on the manuscript, and the
+decisions already settled. The `attack/` analysis is currently **not in active
+development** — see [`attack/README.md`](attack/README.md).

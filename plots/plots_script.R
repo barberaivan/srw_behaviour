@@ -95,9 +95,9 @@ g_xlab <- function(a.gplot){
 # Figure 1: attack scenario for mothers and calves ------------------------
 
 
-dm <- readRDS("behaviour/files/behaviour_mothers_predictions_attack scenarios table object.rds")
-dm_avg <- readRDS("behaviour/files/behaviour_mothers_predictions_attack scenarios table object_avg.rds")
-dc_avg <- readRDS("behaviour/files/behaviour_calves_predictions_attack scenarios table object_avg.rds")
+dm <- readRDS("behaviour/files/behaviour_mothers_predictions_attack scenarios table.rds")
+dm_avg <- readRDS("behaviour/files/behaviour_mothers_predictions_attack scenarios table_avg.rds")
+dc_avg <- readRDS("behaviour/files/behaviour_calves_predictions_attack scenarios table_avg.rds")
 
 years_single <- c(1995, 2004)
 dm_avg$year <- dc_avg$year <- "2013-2018"
@@ -271,7 +271,7 @@ joined2 <- grid.arrange(
 
 # Figure S1 mothers attack scenario for all years --------------------------
 
-predictions <- readRDS("behaviour/files/behaviour_mothers_predictions_attack scenarios table object.rds")
+predictions <- readRDS("behaviour/files/behaviour_mothers_predictions_attack scenarios table.rds")
 
 # Plots
 predictions$scenario <- factor(predictions$scenario, 

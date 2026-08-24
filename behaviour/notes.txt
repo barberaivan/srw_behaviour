@@ -25,6 +25,8 @@ The model was ran using Bz = 3 (quad, lin, int) for z params. Now, it uses Bz = 
 which makes a spline of 4 non-linear basis functions and an intercept, just like
 for the tmat parameters. The files were saved named --lowB. The uptdated ones will
 have normal name. Run this after resolving problems with calves model.
+[2026-08-24] Done: the Bz = 5 run is final and carries the plain names; the
+--lowB files were deleted from the store.
 
 
 CALVES ----------------------------------------------------------------------
@@ -32,6 +34,7 @@ CALVES ----------------------------------------------------------------------
 Editions
 behaviour_calves_analysis_notYear.R will be the old code, with no year effects.
 behaviour_calves_model_notYear.stan will be the corresponding stan model.
+[2026-08-24] Both no-year files were deleted: we always use a model with year.
 
 New files have the nominal name, but will inherit from the mothers' script.
 

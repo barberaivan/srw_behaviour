@@ -4,9 +4,9 @@ library(ggh4x)
 
 # Attack scenario prediction for mother and calves ------------------------
 
-dm <- readRDS("behaviour/files/behaviour_mothers_predictions_attack scenarios table object.rds")
-dm_avg <- readRDS("behaviour/files/behaviour_mothers_predictions_attack scenarios table object_avg.rds")
-dc_avg <- readRDS("behaviour/files/behaviour_calves_predictions_attack scenarios table object_avg.rds")
+dm <- readRDS("behaviour/files/behaviour_mothers_predictions_attack scenarios table.rds")
+dm_avg <- readRDS("behaviour/files/behaviour_mothers_predictions_attack scenarios table_avg.rds")
+dc_avg <- readRDS("behaviour/files/behaviour_calves_predictions_attack scenarios table_avg.rds")
 
 years_single <- c(1995, 2004)
 dm_avg$year <- dc_avg$year <- "2013-2018"
