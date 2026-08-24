@@ -36,12 +36,22 @@ Instructions addressed to you are embedded inline in that document in the form:
 ```
 
 **Always in square brackets, always naming Claude first** — this is the
-convention the document itself states. The tasks are usually written in Spanish
-(e.g. `[Claude, hacé tal cosa]`); answer and write in the language the
-surrounding text uses.
+convention the document itself states.
 
 When asked to work from the draft, read the doc (via the Google Drive
 integration), find the `[Claude, …]` markers, and act on them.
+
+### Language: read Spanish, think and write English
+
+**The paper is written in English.** The instructions in the draft, and parts of
+its text, are often in Spanish (e.g. `[Claude, hacé tal cosa]`) — so are the
+notes and roadmaps in this repo, and *la tesis* below.
+
+Always **think in English**. When something is read in Spanish, translate it to
+English first, and act on the English. Manuscript text produced for the paper is
+always English, whatever the language of the instruction that asked for it. Reply
+to the user in the language they wrote in, but never let Spanish source material
+carry through into the manuscript.
 
 ### The doc is read-only for Claude
 
@@ -57,6 +67,35 @@ pasted into the draft, and quote the marker being answered so it is obvious whic
 task the text belongs to. The person then pastes it in — and, if edits need to be
 visible, does so with Google Docs' own **Suggesting** mode or a colour, which
 tracks authorship far better than anything Claude could mark by hand.
+
+### Reference for the writing — "la tesis"
+
+When writing or revising manuscript text, the best reference for tone, structure
+and background is **María Piotto's undergraduate thesis** (*tesina de grado*,
+UNC, 2021), *"Efectos de los ataques de gaviotas cocineras (Larus dominicanus) en
+el comportamiento, la mortalidad y éxito reproductivo…"*, directed by Carina F.
+Marón and co-directed by Mariano Sironi:
+
+```
+/home/ivan/Insync/Whales/Behaviour/Paper/Manuscrito_MPiotto_ACTUALIZADO_tesis-grado.docx
+```
+
+In the Google Docs draft the user refers to it as **"la tesis"** (or similar) —
+that is this file. It covers the same study system, and **what we are doing now
+is almost, but not exactly, the same**: follow it for framing, terminology and
+references, but always check the current analysis before carrying over a
+methodological claim, since the models here have moved on.
+
+It lives in the Insync folder, outside the repo (~12 MB, Spanish, `.docx`). Read
+it by extracting the text from `word/document.xml` inside the `.docx` (it is a
+zip) rather than trying to open it directly. Reference it whenever it helps.
+
+The same folder, `~/Insync/Whales/Behaviour/Paper/`, holds secondary material
+worth consulting when useful: `srw_behaviour_paper.gddoc` (the local pointer to
+the Google Docs draft above), several older idea/results drafts (`behaviour ideas
+y resultados 2022-*.doc`, `borrador ideas 2025-02-14.doc`, `effects and time
+2022-05-06.doc`) and `behaviour reclassification.xlsx`. These are older than the
+current analysis — treat them as history, not as specification.
 
 **Access requirement:** reading the doc needs the Google Drive connector to be
 authorized as a Google account that the doc is shared with. The doc is owned by a
