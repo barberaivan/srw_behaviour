@@ -1,0 +1,198 @@
+---
+title: "Supplementary information 1"
+subtitle: "Models specification"
+format:
+  pdf:
+    pdf-engine: pdflatex
+    include-in-header:
+      text: |
+        \usepackage{amsmath}
+        \usepackage{bm}
+        \usepackage{xcolor}
+---
+
+The models for mothers and calves behaviour were similar, so we explain first the model for mothers and then we mention the differences for the calves model.  
+  
+We coded the behaviour categories with integers from 1 to 8:  
+  
+1. Rest, surface;
+2. Rest, under water;
+3. Slow travel, surface;
+4. Slow travel, under water;
+5. Fast travel, surface;
+6. Fast travel, under water;
+7. In-place activity, surface;
+8. In-place activity, under water.
+  
+## Mothers model
+
+The mothers model was fitted to 2033 follows recorded in 19 years (1995, 2004--2013, 2015--2019, 2021, 2023 and 2025).  
+  
+We assumed that $Y_{tfm}$, the behaviour observed at time $t$, follow $f$ and year $m$, followed a categorical distribution, which probabilities vector was defined by a row of the transition probability matrix $\boldsymbol{\Gamma}$  
+  
+$$Y_{tfm} \sim \text{Categorical}(\boldsymbol{\Gamma}_{Y_{t-1}., tfm}).$$  
+  
+The transition probability matrix varies through time, follow and year because it depends on the gull attacks and because the model parameters were allowed to vary among years.  
+$\boldsymbol{\Gamma}_{Y_{t-1}., tfm}$ is the $Y_{t-1}^{th}$ row of the $8 \times 8$ transition probability matrix $\boldsymbol{\Gamma}_{tfm}$. The elements of $\boldsymbol{\Gamma}_{tfm}$ represent transition probabilities from row to column:
+$$\gamma_{ij,tfm} = \text{Pr}(Y_{tfm} = j | Y_{t-1,fm} = i).$$  
+  
+To model $\boldsymbol{\Gamma}_{tfm}$ as a function of gull attacks we defined the ($8 \times 8$) $\textbf{H}_{tfm}$ linear predictor matrix, with elements $\eta_{ij,tfm}$, specifying the *multinomial logit* link:  
+$$\gamma_{ij,tfm} = \frac{\exp(\eta_{ij,tfm})}{\sum_{k=1}^{8} \exp(\eta_{ik,tfm})}.$$
+
+The linear predictors were linear functions of the latent covariate $z_{t-1,fm}$, which represents the disturbance by gull attacks
+$$
+  \eta_{ij,tfm} =
+  \begin{cases}
+  \alpha_{ij,m} + \beta_{ij,m} \ z_{t-1,fm}     & \text{if} \ i \ne j \\
+  0                                                   & \text{if} \ i = j. 
+  \end{cases}
+$$
+
+The diagonal elements of $\textbf{H}_{tfm}$ were fixed at zero for identifiability, following Leos Barajas et al. (2017).  
+  
+$z_{t-1,fm}$ was defined with a recursive function that would increase when attacks occur and would decrease when there are no attacks. The $z$ value for the interval before each follow began, $z_{0fm}$, was estimated. 
+
+$$
+\begin{aligned}
+  z_{tfm} = \ &z_{t-1,fm} \\ 
+              &+ \psi_{tfm} \ (1 - z_{t-1,fm}) \ \text{attack}_{tfm}\\
+              &- \tau_m \ z_{t-1,fm} \ (1- \text{attack}_{tfm}). 
+\end{aligned}
+$$
+
+"attack" is a binary variable indicating whether an attack to mother, calf or both occurred. $\tau_m$ is the decrease proportion, and $\psi_{tfm}$ is the increase proportion, which depends on the number or attacks on both mother and calf:  
+  
+$$
+\begin{aligned}
+   \psi_{tfm} &= \text{logit}^{-1}(\\
+  &\kappa_m\\
+  &+ \delta_{b,m} \ \text{attack\_both}_{tfm} \\
+  &- \delta_{c,m} \ \text{attack\_calf\_only}_{tfm} \\
+  &+ \lambda \ (\text{attack\_calf\_number}_{tfm} - 1) \ \text{attack\_calf}_{tfm}\\
+  )&\\
+  \end{aligned}
+$$  
+attack_both takes 1 only if both mother and calf are attacked and 0 otherwise,   
+attack_calf_only takes 1 if only the calf is attacked and 0 otherwise,  
+attack_calf takes 1 if the calf is attacked, irrespective of attacks on mother, and 0 otherwise,  
+attack_calf_number is the number of attacks on the calf.  
+
+$\kappa_m$ is the intercept at the logit scale that corresponds to the intervals (t) where only the mother is attacked. The $\delta$ parameters are constrained to be $>0$, so when both mother and calf are attacked, the intercept is $\kappa_m + \delta_{b,m}$. If only the calf is attacked, the intercept decreases, taking $\kappa_m - \delta_{c,m}$. This way, we assumed that an attack to both mother and calf would cause a larger or equal increase in the disturbance level ($z$) compared to when only the mother is attacked. Likewise, an attack only to calf would cause a smaller or equal increase in the disturbance level ($z$) compared to when only the mother is attacked. $\lambda$ is the slope for the effect of the attack number of calves. attack_calf_number was subtracted 1 to make $\text{logit}(\psi_{tfm}) = \kappa_m - \delta_{c,m}$ when there is only 1 attack to calf. As the number of attacks on mothers was mostly 1 or 2 and its distribution did not vary across years, we could not estimate the effect of the attack number on mothers. When we included a similar term for mothers, the posterior of the mother's $\lambda$ parameter copied the prior.  
+  
+An important aspect of this model is that for $z$ to represent the disturbance caused by attacks at the hour scale (most follows spanned one hour) $\psi$ and $\tau$ must be away from 0. When $\psi = \tau = 0$, $z$ is constant across all intervals in the follow: $z_{tfm} = z_{0fm}$. When this happens, $z$ is a latent variable that represents inter-follow variability in transition probabilities. In this case, the model could be thought of as an ordination of the follows through the transition probability matrix. To avoid this we constrained the parameters controlling $\psi$ and $\tau$ itself, to keep the $z$ variation within the hour scale. As the maximum number of consecutive intervals with attacks on mothers was 6, we supposed that this scenario should take z at least from 0 to 0.9, so we set the lower limit for $\psi$ when mothers are attacked at 0.319. In the same spirit, we assumed that in one hour without attacks $z$ should decrease at least from 1 to 0.1, so we set the lower limit for $\tau$ at 0.175.
+  
+As we aimed to estimate how the mothers' response to attacks changed across years, we allowed most model parameters ($\alpha, \beta, \kappa, \delta_b \text{ and } \delta_c$) to vary between years, using smoothing splines. In addition, to account for unexplained variability between years, we included a year random effect on $\alpha$.  
+  
+The years effects for $\alpha$ and $\beta$ (splines and random effects) were assumed to be remain constant within the columns of $\textbf{H}_{tfm}$ to decrease the number of parameters. This means that there is no year $\times$ previous behaviour interaction: their effects are assumed additive at the multinomial logit scale. The structure and priors for $\alpha$ and $\beta$ were the same, except that we did not include random effects for $\beta$, as we considered hard to estimate those effects with the available data. We only show the model structure for $\alpha$.
+
+$$
+\begin{aligned}
+\alpha_{ij,m} &= \alpha_{ij,\mu} + \nu_{\alpha,m,j} + \epsilon_{\alpha,j,m} \\
+\boldsymbol{\nu}_{\alpha} & = \textbf{X} \ \boldsymbol{\omega}_{\alpha} \\
+\\
+\alpha_{ij,\mu} &\sim \text{Normal}(0, 2) \\
+\omega_{\alpha,4,j} &\sim \text{Normal}(0, 0.6) \\
+\omega_{\alpha,q,j} &\sim \text{Normal}(0, \sigma_{\omega}) \ \ \ \text{for} \  q \in \{1, 2, 3\} \\
+\epsilon_{\alpha,j,m} &\sim \text{Normal}(0, \sigma_{\epsilon, \alpha})\\
+\\
+\sigma_{\omega} &\sim \text{Half-Normal}(0, 0.4) \\
+\sigma_{\epsilon, \alpha} &\sim \text{Half-Normal}(0, 0.75) \\
+\end{aligned}
+$$  
+  
+$\alpha_{ij,\mu}$ is the intercept, while $\nu$ and $\epsilon$ are the year effects (spline and random effects, respectively). Notice that these effects have no $i$ suffix, so they are constant across the rows of the linear predictor matrices. $\boldsymbol{\nu}_{\alpha}$ is a 19 $\times$ 8 matrix (years $\times$ behaviour categories) containing a spline for each behaviour category (8) evaluated at each year (19). $\textbf{X}$ is a 19 $\times$ 4 matrix containing the cubic regression spline basis functions evaluated in each year (19). The basis dimension was set to $k = 5$; as the intercept was absorbed into the identifiability constraint, 4 basis functions remain in $\textbf{X}$. $\boldsymbol{\omega}_{\alpha}$ is a 4 $\times$ 8 matrix containing the spline coefficients (4 rows) for every behaviour category (8 columns). The spline bases were parametrized to have a diagonal penalty matrix, so the fourth basis is a linear function of year and the remaining three are non-linear. To impose a smaller penalty on this term we specified a non-hierarchical prior on $\omega_{\alpha,4,j}$, while the coefficients associated to non-linear basis functions were assigned a hierarchical prior. The $\boldsymbol{\omega}$ matrices for $\alpha$ and $\beta$ shared the same hierarchical prior, estimating only one standard deviation parameter ($\sigma_{\omega}$). Notice that the $\boldsymbol{\text{X}}$ does not include an intercept term, so the intercept $\alpha_{ij,\mu}$ has to be added.  
+    
+The years effects for the parameters controlling $z$ were a bit different because they required sign and size constraints. We assumed that an undisturbed whale ($z = 0$) that is attacked in 6 consecutive intervals (the longest sequence of attacks observed) would increase $z$ at least up to 0.9. This implies that the smallest value that $\psi$ could take under this condition is $\text{L}_{\psi} = 0.319$. When only mothers are attacked, $\psi = \text{logit}^{-1}(\kappa)$. To compute $\psi$ when the calf is attacked or when mother and calf are attacked we needed to use $\kappa$, which lays at the logit scale, but we needed $\kappa$ to meet the above restriction. Thus, we defined $\kappa_{\text{raw}}$ as an unbounded parameter and we bounded it at the proportion (inverse logit) scale:  
+$$\psi_{\text{mother}} = \text{logit}^{-1}(\boldsymbol{\kappa}_{\text{raw}}) \ (1 - \text{L}_{\psi}) + \text{L}_{\psi},$$
+getting
+$$
+\psi_{\text{mother}} \in [\text{L}_{\psi}, 1]
+$$
+and 
+$$
+\kappa = \text{logit}(\psi_{\text{mother}}).
+$$
+$\kappa$, $\delta_b$, $\delta_c$ and $\tau$, varied by years and were defined with cubic regression splines of the same basis dimension used for the transition matrix parameters ($k = 5$), but including an intercept column. $\kappa$ was defined as follows: 
+
+$$
+\begin{aligned}
+\boldsymbol{\kappa}_{\text{raw}} &= \textbf{Z} \ \boldsymbol{\rho}_{\kappa} \\
+\boldsymbol{\kappa} &= \text{logit}[\text{logit}^{-1}(\boldsymbol{\kappa}_{\text{raw}}) \ (1 - \text{L}_{\psi}) + \text{L}_{\psi}] \\
+\rho_{\kappa,q} &\sim \text{Normal}(0, 1.5) \ \ \ \text{for} \ q \in \{1, ..., 5\}. \\
+\end{aligned}
+$$  
+
+$\textbf{Z}$ is a 19 $\times$ 5 matrix containing 4 cubic regression spline basis functions (the same construction used for $\textbf{X}$) plus an intercept column. $\boldsymbol{\rho}_{\kappa}$ is a 5-length vector with the spline coefficients defining the spline for $\kappa$. $\boldsymbol{\kappa}$ is a vector containing 19 values, one for each year. As the spline matrix for $\alpha$ and $\beta$, $\textbf{X}$, the basis functions were parameterized to have a diagonal penalty matrix, so independent Normal priors were specified for its coefficients. For the parameters controlling the $z$ dynamics ($\boldsymbol{\kappa}$, $\boldsymbol{\delta}_b$, $\boldsymbol{\delta}_c$ and $\boldsymbol{\tau}$) we did not estimate the smoothing parameter for their splines, but rather fixed them with regularizing priors. This decision was based on the difficulty to estimate those parameters with the available data. As different restrictions were needed for each parameter, the priors on the spline coefficients were chosen separately. $\delta_b$ and $\delta_c$ were required to be positive, so we defined them with a log link (same structure and priors for both):  
+
+$$
+\begin{aligned}
+\boldsymbol{\delta} &= \text{exp}(\textbf{Z} \ \boldsymbol{\rho}_{\delta}) \\
+\rho_{\delta,q} &\sim \text{Normal}(0, 1) \ \ \ \text{for} \ q \in \{1, ..., 5\}. \\
+\end{aligned}
+$$  
+$\tau$ required a similar restriction as $\psi_{\text{mother}}$. We assumed that the slowest recovery towards the undisturbed state ($z = 0$), starting from the most disturbed state ($z = 1$), would make $z$ decrease to 0.1 in one hour without attacks (12 intervals). To meet this we set the lower limit for $\tau$ at $\text{L}_{\tau} = 0.175$:  
+  
+$$
+\begin{aligned}
+\boldsymbol{\tau} &= \text{logit}^{-1}(\textbf{Z} \ \boldsymbol{\rho}_{\tau}) \ (1 - \text{L}_{\tau}) + \text{L}_{\tau} \\
+\rho_{\tau,q} &\sim \text{Normal}(0, 1.5) \ \ \ \text{for} \ q \in \{1, ..., 5\}. \\
+\end{aligned}
+$$  
+  
+$\lambda$ was assumed to be fixed across years, and a Half-Normal prior was specified:
+$$\lambda \sim \text{Half-Normal}(2).$$   
+In all follows we specified a flat prior on $z_0$, the initial $z$ value:  
+$$z_{0fm} \sim \text{Uniform}(0, 1).$$  
+  
+The restrictions on $\kappa$ and $\tau$ force $z$ to vary at the temporal scale of the follows duration. At first sight it might seem like forcing the attacks to have an effect on the whales' behaviour, which could be untrue. But that effect depends not only on $z$, but also on the $\beta$ parameters, which control the effect of $z$ on transition probabilities. Hence, if attacks do not affect the whales' behaviour, the $\beta$ parameters would be around 0, so $z$ would not affect the transition probabilities and all the parameters controlling $z$ ($z_0$, $\kappa$, $\delta_b$, $\delta_c$, $\lambda$, and $\tau$) would probably copy their priors.
+
+## Calves model
+
+The calves model shares the structure described above: the same eight behaviour categories, the same categorical likelihood with a multinomial logit link, the same zero diagonal in $\textbf{H}_{tfm}$, the same linear dependence of $\eta_{ij,tfm}$ on the latent disturbance $z_{t-1,fm}$, and the same recursive definition of $z$. Below we only describe what differs. (When calves were resting at the surface, nursing was included in the *Rest, surface* category.)  
+  
+**Data.** Calves behaviour was recorded in fewer years than mothers behaviour: the calves model was fitted to 1097 follows recorded in 9 years (2013, 2015--2019, 2021, 2023 and 2025), against 2033 follows in 19 years for mothers.  
+  
+**Increase parameters.** This is the main structural difference. In the mothers model the increase proportion is defined by a single intercept $\kappa_m$ (the reference being an attack on the mother) plus two positive offsets, $\delta_{b,m}$ and $\delta_{c,m}$, which impose an ordering among attack types. In the calves model we did not impose such an ordering: we estimated three separate increase parameters, one for each mutually exclusive attack type, each varying by year with its own spline  
+  
+$$
+\begin{aligned}
+   \psi_{tfm} = \text{logit}^{-1}(
+  &\kappa_{c,m} \ \text{attack\_calf\_only}_{tfm} \\
+  &+ \kappa_{b,m} \ \text{attack\_both}_{tfm} \\
+  &+ \kappa_{m,m} \ \text{attack\_mother\_only}_{tfm} \\
+  &+ \lambda \ (\text{attack\_calf\_number}_{tfm} - 1) \ \text{attack\_calf}_{tfm}
+  ),&\\
+  \end{aligned}
+$$  
+where attack_mother_only takes 1 if only the mother is attacked and 0 otherwise. As exactly one of the three indicators equals 1 whenever an attack occurs, $\psi_{tfm}$ reduces to the increase parameter of the corresponding attack type (modified by the last term when the calf received more than one attack). Each of the three parameters was bounded and defined on the logit scale in the same way as $\kappa$ in the mothers model,  
+  
+$$
+\begin{aligned}
+\boldsymbol{\psi}_{\cdot} &= \text{logit}^{-1}(\textbf{Z} \ \boldsymbol{\rho}_{\cdot}) \ (1 - \text{L}_{\psi}) + \text{L}_{\psi} \\
+\boldsymbol{\kappa}_{\cdot} &= \text{logit}(\boldsymbol{\psi}_{\cdot}), \\
+\end{aligned}
+$$  
+with $\cdot \in \{c, b, m\}$. Hence the calves model has no $\delta$ parameters and no log link: the three increase parameters lie in $[\text{L}_{\psi}, 1]$ by construction, and they are free to take any order.  
+  
+**Lower limit for the increase.** The longest sequence of consecutive intervals with attacks was 7 for calves (against 6 for mothers), so requiring that such a sequence takes $z$ from 0 to at least 0.9 gives $\text{L}_{\psi} = 0.280$. The lower limit for the decay is the same as for mothers, $\text{L}_{\tau} = 0.175$, and $\tau$ is defined exactly as above.  
+  
+**Basis dimension.** With 9 years instead of 19, we used smaller bases: the basis dimension was set to $k = 3$ for both splines. After absorbing the intercept into the identifiability constraint, $\textbf{X}$ is a 9 $\times$ 2 matrix (one non-linear basis function and one linear one), and $\textbf{Z}$ is a 9 $\times$ 3 matrix (the same two basis functions plus an intercept column). Accordingly, $\boldsymbol{\omega}_{\alpha}$ is a 2 $\times$ 8 matrix, in which the second row holds the linear term:  
+  
+$$
+\begin{aligned}
+\omega_{\alpha,2,j} &\sim \text{Normal}(0, 0.6) \\
+\omega_{\alpha,1,j} &\sim \text{Normal}(0, \sigma_{\omega}). \\
+\end{aligned}
+$$  
+  
+**Priors on the $z$ spline coefficients.** As the basis is smaller, the coefficients were given term-specific priors, ordered from the non-linear term to the intercept. For the three increase parameters ($\cdot \in \{c, b, m\}$) and for the decay,  
+  
+$$
+\begin{aligned}
+\rho_{\cdot,1} &\sim \text{Normal}(0, 1) \ \text{[non-linear term]} \\
+\rho_{\cdot,2} &\sim \text{Normal}(0, 1.5) \ \text{[linear term]} \\
+\rho_{\cdot,3} &\sim \text{Normal}(0, 1.5) \ \text{[intercept]}. \\
+\end{aligned}
+$$  
+  
+**Remaining priors.** The prior for the intercepts of $\beta$ was slightly narrower than in the mothers model, $\beta_{ij,\mu} \sim \text{Normal}(0, 1.5)$ instead of $\text{Normal}(0, 2)$, and the prior for the effect of the number of attacks on the calf was $\lambda \sim \text{Half-Normal}(1)$ instead of $\text{Half-Normal}(2)$. All the other priors ($\alpha_{ij,\mu}$, $\sigma_{\omega}$, $\sigma_{\epsilon,\alpha}$ and $z_{0fm}$) are the same as in the mothers model, and, as for mothers, the year random effect was included on $\alpha$ only.

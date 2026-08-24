@@ -35,8 +35,28 @@ Instructions addressed to you are embedded inline in that document in the form:
 [Claude, task-description]
 ```
 
+**Always in square brackets, always naming Claude first** — this is the
+convention the document itself states. The tasks are usually written in Spanish
+(e.g. `[Claude, hacé tal cosa]`); answer and write in the language the
+surrounding text uses.
+
 When asked to work from the draft, read the doc (via the Google Drive
 integration), find the `[Claude, …]` markers, and act on them.
+
+### The doc is read-only for Claude
+
+The Google Drive connector can **read** the document (`read_file_content`, which
+also returns comment threads) but **cannot write to it**. Its `update_file` tool
+only changes metadata — title and parent folder — and there is no access to the
+Google Docs API, so Claude cannot insert text, let alone apply colours,
+highlights or Suggesting-mode edits inside the doc.
+
+Therefore: never claim an edit was made in the doc. Deliver the result of a
+`[Claude, …]` task in the terminal (or as a repo file), formatted so it can be
+pasted into the draft, and quote the marker being answered so it is obvious which
+task the text belongs to. The person then pastes it in — and, if edits need to be
+visible, does so with Google Docs' own **Suggesting** mode or a colour, which
+tracks authorship far better than anything Claude could mark by hand.
 
 **Access requirement:** reading the doc needs the Google Drive connector to be
 authorized as a Google account that the doc is shared with. The doc is owned by a
