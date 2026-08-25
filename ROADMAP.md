@@ -5,6 +5,82 @@ this or that as it goes — so this is not a checklist to burn down. Things get
 done **as needed**; an item sitting here unresolved is not a problem, it is just
 a note to whoever needs it next.
 
+## Done, waiting on Iván
+
+### Results text + three figure captions — Claude, 2026-08-25
+
+Acting on the `[Claude, ...]` markers still open in the manuscript's Results:
+
+| Marker (paragraph) | What it asks |
+|---|---|
+| "write the results sections" | 1-2 paragraphs per figure, placed **before** each figure |
+| Figure 4 caption | "complete this image caption" |
+| Figure 5 caption | "explain again here the meaning of each effect, very succinct, small" |
+| Figure 6 caption | "make this caption a bit more complete" |
+
+The Figure 2 and Figure 3 captions carry explicit *do not edit* markers, so they
+are left alone.
+
+**Where the numbers come from.** Everything quoted in the text was recomputed
+from the committed prediction tables, not read off the figures:
+`behaviour/files/behaviour_{mothers,calves}_predictions_total effects.rds`
+(the four δ effects per year), `…predictions disturbed and undisturbed by
+year.rds` (the eight category probabilities per year and scenario),
+`…attack scenarios table_periods.rds` (the time courses of Figure 4, which run to
+150 min even though the figure is cut at 70), and the imputed-behaviour data in
+`models/behaviour/behaviour_{mothers,calves}_data with imputed behaviours.rds`
+(attack occurrence and intensity per year, and the grouped proportions of
+Figure 6B).
+
+**Decisions taken:**
+
+- **The text is inserted into the `.docx` in teal**, following the house rules,
+  with `tools/insert_results_text_into_docx.py` (same machinery as the figure
+  insertion). A pre-edit backup is kept next to the manuscript.
+- **Captions are inserted as new paragraphs, not edits.** The house rule forbids
+  touching a paragraph a co-author wrote, and the captions are theirs, so each
+  completed caption goes in as a new teal paragraph right below the original,
+  ready for Iván to swap in. The `[Claude, ...]` markers stay where they are.
+- **`plots/figure_6_attacks_behaviour_mortality.R` had an em-dash** in the panel C
+  placeholder annotation, which the new no-em-dash rule forbids in figures. It
+  was changed to a colon and the figures rebuilt as `_v02`. The em-dashes left in
+  the plotting scripts are all in comments, which the rule does not cover.
+
+**What went into the file.** 38 paragraphs, all teal, all new: five Results
+blocks (one per figure, each *before* its figure, with an underlined subsection
+heading in the Methods style) and the three captions. The install was verified
+programmatically: all 208 original paragraphs survive byte-identical and in
+order, the XML parses, the image count is unchanged (7), and the inserted text
+carries no em-dash. The pre-edit file is
+`~/Insync/Whales/Behaviour/Paper/srw_behaviour_paper_BACKUP_2026-08-25_pre-results.docx`.
+
+**Doubts for Iván, none of them blocking:**
+
+- **Subsection headings in the Results were my call.** The marker said "the
+  results sections", so each figure's block got an underlined heading. Delete
+  them if the Results should run as continuous prose.
+- **The Figure 4 marker had already been half-resolved.** The manuscript now
+  carries a single Figure 4 image and no version note, so Iván had already
+  picked one; the caption I wrote describes what is in the file (the patchwork
+  version, A and B panels).
+- **The 1995 recovery result is the shakiest claim in the text.** Recovery from
+  attacks is three to four times slower from 2011 onwards than it was in 1995,
+  but 1995 is one year with the widest intervals in Figure 4. The text says so.
+  This is the single most interesting result and also the one most likely to be
+  challenged.
+- **The dissociation claim is the backbone of the Results.** The long-term and
+  total effects rise with year (Spearman 0.67 and 0.62) and are uncorrelated
+  with the attack pressure of the year (0.01 and 0.12), while attacks on mothers
+  actually *decline* over the series (-0.62). The text puts this to the
+  discussion rather than explaining it. If the intended reading is different,
+  the last paragraph of the Results is the one to rewrite.
+
+**Still open:** Iván and Meri still have to pick one version of Figures 3 and 6;
+the Figure 6 panel C mortality series is still Meri's call. Note that the `.docx`
+still embeds the Figure 6 `_v01` images while the repo now has `_v02` (they
+differ only in the panel C placeholder wording), which resolves itself when the
+panel is redrawn with the real series.
+
 ## Done, waiting on Iván and Meri
 
 ### Results figures (Figures 3-6) — Claude, 2026-08-24
@@ -33,12 +109,10 @@ the theme and behaviour coding the four scripts share, and
 `tools/insert_figures_into_docx.py` is the script that put the figures into the
 `.docx` — reuse it for the next batch rather than rewriting the XML machinery.
 
-**NOTHING OF THIS IS COMMITTED YET.** As of the end of that session `git log`
-still ended at *"Set the working agreement"* and 23 paths were new or modified.
-Iván commits when he wants to; until he does, this work exists only in the
-working tree, and the store objects
+**Committed and pushed** on 2026-08-25 as `9f03950`, "Add the Results figures
+(Figures 3-6) and the code behind them". The store objects
 (`models/behaviour/behaviour_calves_model_samples_predict_observed_attack*.rds`)
-only on this machine.
+live outside git, so they exist only on this machine.
 
 **Where the figures come from, if a number has to be checked.** All four scripts
 run from the repo root and take a few seconds each, except

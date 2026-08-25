@@ -31,7 +31,7 @@ srw_behaviour/
 ├── attack/             gull-attack occurrence and intensity models (dormant)
 ├── data/    → symlink  raw, private records (outside git; see setup below)
 ├── models/  → symlink  heavy generated objects, ~7 GB (outside git)
-├── tools/              helper scripts (currently: inserting figures into the manuscript .docx)
+├── tools/              helper scripts (currently: inserting figures and text into the manuscript .docx)
 ├── CLAUDE.md           working agreement and guidance for Claude Code
 ├── ROADMAP.md          open threads: what is in flight and what still needs doing
 └── setup.sh            links the data/model store into the repo (run once)
@@ -62,7 +62,7 @@ srw_behaviour/
 | `figure_3_behaviour_timeseries.R` | **Figure 3**: behaviour by year under the disturbed, undisturbed and observed conditions, mothers and calves. Two layouts: `figure_3_behaviour_timeseries_faceted_v01.png` (separate blocks, patchwork) and `..._dodged_v01.png` (same panels). |
 | `figure_4_attack_scenarios_periods.R` | **Figure 4**: behaviour under persistent attacks and after their cessation, by period. Two layouts: `figure_4_attack_scenarios_patchwork_v01.png` and `..._nested_v01.png`. |
 | `figure_5_effects_summary.R` | **Figure 5**: the potential, short-term, long-term and total effects by year, mothers and calves keyed by colour. Produces `figure_5_effects_summary_v01.png`. |
-| `figure_6_attacks_behaviour_mortality.R` | **Figure 6**: attacks, grouped behaviour classes and calf mortality through the years. Two layouts: `figure_6_attacks_behaviour_mortality_mothers_v01.png` and `..._both_v01.png`. Its mortality panel is an empty placeholder — see the note for Meri in the script. |
+| `figure_6_attacks_behaviour_mortality.R` | **Figure 6**: attacks, grouped behaviour classes and calf mortality through the years. Two layouts: `figure_6_attacks_behaviour_mortality_mothers_v02.png` and `..._both_v02.png`. Its mortality panel is an empty placeholder — see the note for Meri in the script. |
 
 **`attack/` — dormant.** `mothers/`, `calves/` and `mothers2/` hold the
 occurrence and intensity models (`*_occurrence.*`, `*_count.*`) for each target,
@@ -75,6 +75,7 @@ combining them, and `occurrence models trials.*` the exploratory fits. See
 | Script | What it does |
 |---|---|
 | `insert_figures_into_docx.py` | Inserts figures and teal notes into the manuscript `.docx` under the house rules in `CLAUDE.md`: only new paragraphs, no tracked changes, and a check that every original paragraph survives byte-identical and in order. Refuses to run twice over the same file. |
+| `insert_results_text_into_docx.py` | Inserts the Results text and the completed Figure 4, 5 and 6 captions into the manuscript `.docx`, in teal, with the same guarantees. The text itself lives in this file, so what was handed to the manuscript is versioned with the code that produced the numbers. |
 
 **Root.** `Supplementary information 1.qmd` (and its rendered
 `Supplementary-information-1.pdf`) is the full model specification cited by the

@@ -180,7 +180,7 @@ p3 <- ggplot(mortality, aes(x = year, y = value)) +
   geom_line(linewidth = 0.4) +
   geom_point(size = 2) +
   annotate("text", x = mean(year_range), y = 0.5,
-           label = "series to be decided — see the note for Meri",
+           label = "series to be decided: see the note for Meri",
            colour = "#008080", size = 3) +
   scale_x_continuous(limits = year_range, breaks = year_breaks) +
   scale_y_continuous(limits = c(0, 1)) +
@@ -201,10 +201,10 @@ assemble <- function(p2) {
           plot.margin = margin(1, 2, 1, 2, unit = "mm"))
 }
 
-ggsave("plots/figure_6_attacks_behaviour_mortality_mothers_v01.png",
+ggsave("plots/figure_6_attacks_behaviour_mortality_mothers_v02.png",
        plot = assemble(p2_mothers),
        height = 19, width = 18, units = "cm", dpi = 400)
 
-ggsave("plots/figure_6_attacks_behaviour_mortality_both_v01.png",
+ggsave("plots/figure_6_attacks_behaviour_mortality_both_v02.png",
        plot = assemble(p2_both),
        height = 19, width = 18, units = "cm", dpi = 400)
