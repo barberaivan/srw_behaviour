@@ -32,7 +32,22 @@
 import os, re, shutil, subprocess, zipfile
 from xml.etree import ElementTree as ET
 
-PAPER = "/home/ivan/Insync/Whales/Behaviour/Paper/srw_behaviour_paper.docx"
+# The manuscript is renamed as it is passed around (srw_behaviour_paper_<initials>_
+# <date>.docx), so it is resolved by listing the folder rather than hardcoded:
+# the most recent one that is not a BACKUP snapshot.
+PAPER_DIR = "/home/ivan/Insync/Whales/Behaviour/Paper"
+
+
+def current_paper():
+    cand = [f for f in os.listdir(PAPER_DIR)
+            if f.startswith("srw_behaviour_paper") and f.endswith(".docx")
+            and "BACKUP" not in f and not f.startswith("~")]
+    assert cand, "no manuscript found in " + PAPER_DIR
+    cand.sort(key=lambda f: os.path.getmtime(os.path.join(PAPER_DIR, f)))
+    return os.path.join(PAPER_DIR, cand[-1])
+
+
+PAPER = current_paper()
 REPO = "/home/ivan/dev/srw_behaviour"
 WORK = "/tmp/claude-1000/-home-ivan-dev/d48a8568-d1b9-4a7e-971b-96cc551ecedd/scratchpad/docx"
 SRC = os.path.join(WORK, "work")

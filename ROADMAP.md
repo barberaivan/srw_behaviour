@@ -75,6 +75,12 @@ carries no em-dash. The pre-edit file is
   discussion rather than explaining it. If the intended reading is different,
   the last paragraph of the Results is the one to rewrite.
 
+**The manuscript was renamed** by Iván after this work went in, to
+`srw_behaviour_paper_IB_2026-08-25.docx`, and sent to Meri. Initials plus date is
+the convention when the draft is passed to a co-author, so the name changes
+again on the way back: resolve it by listing the folder, never by hardcoding it
+(both scripts in `tools/` now do this, and `CLAUDE.md` says so).
+
 **Still open:** Iván and Meri still have to pick one version of Figures 3 and 6;
 the Figure 6 panel C mortality series is still Meri's call. Note that the `.docx`
 still embeds the Figure 6 `_v01` images while the repo now has `_v02` (they
@@ -88,7 +94,7 @@ panel is redrawn with the real series.
 Every `[Claude, ...]` marker in the manuscript's **Results** section has been
 acted on. The figures are in `plots/`, their code is in the repo, and both the
 figures and a short teal note for each were inserted into the `.docx`
-(`~/Insync/Whales/Behaviour/Paper/srw_behaviour_paper.docx`; the pre-edit file is
+(the working manuscript, at the time named `srw_behaviour_paper.docx`; the pre-edit file is
 kept next to it as `srw_behaviour_paper_BACKUP_2026-08-24_pre-figures.docx`).
 Where a marker asked for two layouts, both are in the file so co-authors can
 choose — **Iván/Meri pick one per figure, and the loser's code can then be

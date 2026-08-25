@@ -98,8 +98,16 @@ Most tasks are written in the **manuscript itself**, a Word file kept in the
 Insync folder (outside this repo):
 
 ```
-/home/ivan/Insync/Whales/Behaviour/Paper/srw_behaviour_paper.docx
+/home/ivan/Insync/Whales/Behaviour/Paper/srw_behaviour_paper_<initials>_<YYYY-MM-DD>.docx
 ```
+
+**The file name carries whoever last worked on it and when**, because the draft
+is passed around: Iván renames it before sending it to a co-author. As of
+2026-08-25 the working file is `srw_behaviour_paper_IB_2026-08-25.docx`, sent to
+Meri. **Never assume the name — list the folder and take the most recent
+`srw_behaviour_paper_*.docx` that is not a `BACKUP`**, and say which file was
+used when reporting. Files named `srw_behaviour_paper_BACKUP_<date>_<what>.docx`
+are pre-edit snapshots kept by Claude; they are history, never the target.
 
 **This is the working manuscript.** The Google Docs draft it came from has been
 abandoned — do not read or write it, and ignore the `.gddoc` pointer sitting next
