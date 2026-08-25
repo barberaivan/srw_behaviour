@@ -31,6 +31,7 @@ srw_behaviour/
 ├── attack/             gull-attack occurrence and intensity models (dormant)
 ├── data/    → symlink  raw, private records (outside git; see setup below)
 ├── models/  → symlink  heavy generated objects, ~7 GB (outside git)
+├── tools/              helper scripts (currently: inserting figures into the manuscript .docx)
 ├── CLAUDE.md           working agreement and guidance for Claude Code
 ├── ROADMAP.md          open threads: what is in flight and what still needs doing
 └── setup.sh            links the data/model store into the repo (run once)
@@ -47,20 +48,33 @@ srw_behaviour/
 | `behaviour_calves_analysis.R` | The same pipeline for calves (9 years instead of 19). |
 | `behaviour_calves_model.stan` | The calves model — as the mothers one, but with three separate increase parameters and smaller spline bases. |
 | `behaviour_calves_assessing prior for beta.R` | Prior check that settled `beta ~ Normal(0, 1.5)` for calves, comparing calves' and mothers' betas in shared years. |
+| `behaviour_period_predictions.R` | Averages the attack-scenario predictions over the manuscript's periods (1995, 2004-2010, 2011-2013, 2014-2019, 2020-2025) and over the years shared by mothers and calves, always within each posterior sample. Feeds Figure 4. |
+| `behaviour_calves_obspred.R` | The calves' behaviour simulated at the estimated `z` (their "observed attack" prediction), and the four effect types computed from it. The calves' half of the section that the analysis script left un-run; feeds Figure 5. |
 | `plots_script_mother calf.R` | Exploratory mother-vs-calf figures (attack scenarios, total effects, `z` dynamics). |
 
 **`plots/` — manuscript figures**
 
 | Script | What it does |
 |---|---|
-| `plots_script.R` | The main manuscript figures: attack scenarios, behaviour by year (disturbed / undisturbed / observed), and the effects on mothers and calves. Defines the shared `theme_mine()`. |
+| `plots_script.R` | The earlier, exploratory version of the manuscript figures: attack scenarios, behaviour by year (disturbed / undisturbed / observed), the effects on mothers and calves, and the attack figures. Also defines `theme_mine()`. |
+| `theme_paper.R` | Sourced by the figure scripts below: the behaviour coding, `separate_behav()`, the palettes and `theme_mine()`, defined once. |
 | `figure_2_etogram.R` | **Figure 2**: stacked-bar etogram by year, mothers and calves, from the model-imputed behaviour. Currently produces `figure_2_etogram_v01.png`. |
+| `figure_3_behaviour_timeseries.R` | **Figure 3**: behaviour by year under the disturbed, undisturbed and observed conditions, mothers and calves. Two layouts: `figure_3_behaviour_timeseries_faceted_v01.png` (separate blocks, patchwork) and `..._dodged_v01.png` (same panels). |
+| `figure_4_attack_scenarios_periods.R` | **Figure 4**: behaviour under persistent attacks and after their cessation, by period. Two layouts: `figure_4_attack_scenarios_patchwork_v01.png` and `..._nested_v01.png`. |
+| `figure_5_effects_summary.R` | **Figure 5**: the potential, short-term, long-term and total effects by year, mothers and calves keyed by colour. Produces `figure_5_effects_summary_v01.png`. |
+| `figure_6_attacks_behaviour_mortality.R` | **Figure 6**: attacks, grouped behaviour classes and calf mortality through the years. Two layouts: `figure_6_attacks_behaviour_mortality_mothers_v01.png` and `..._both_v01.png`. Its mortality panel is an empty placeholder — see the note for Meri in the script. |
 
 **`attack/` — dormant.** `mothers/`, `calves/` and `mothers2/` hold the
 occurrence and intensity models (`*_occurrence.*`, `*_count.*`) for each target,
 `mothers_spline years/` an earlier spline variant, `plots_attack.R` the figures
 combining them, and `occurrence models trials.*` the exploratory fits. See
 [`attack/README.md`](attack/README.md) and `attack/Hoja de ruta` (Spanish).
+
+**`tools/`**
+
+| Script | What it does |
+|---|---|
+| `insert_figures_into_docx.py` | Inserts figures and teal notes into the manuscript `.docx` under the house rules in `CLAUDE.md`: only new paragraphs, no tracked changes, and a check that every original paragraph survives byte-identical and in order. Refuses to run twice over the same file. |
 
 **Root.** `Supplementary information 1.qmd` (and its rendered
 `Supplementary-information-1.pdf`) is the full model specification cited by the
