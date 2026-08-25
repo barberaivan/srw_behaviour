@@ -108,5 +108,5 @@ p <- ggplot(d, aes(x = year, y = prop, fill = behav_raw, alpha = exposure)) +
         legend.margin = margin(t = 0, b = 0),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
-ggsave("plots/figure_2_etogram.png", plot = p,
+ggsave("plots/figure_2_etogram_v01.png", plot = p,
        height = 14, width = 17, units = "cm", dpi = 400)

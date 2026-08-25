@@ -9,13 +9,71 @@ It contains the R and Stan scripts for the two main analyses:
 - `behaviour/` — behavioural-state models for mothers and calves (multinomial
   hidden-state models in Stan), plus behaviour imputation and prediction.
 - `attack/` — kelp-gull attack **occurrence** and **intensity** models
-  (mothers and calves).
-- `plots/` — figures combining mothers and calves results.
+  (mothers and calves). **Dormant** — the attack side is currently not planned
+  for the paper; see [`attack/README.md`](attack/README.md).
+- `plots/` — figures for the manuscript, combining mothers and calves results.
 
 Small model outputs (parameter summaries, prediction tables) are committed under
 each analysis' `files/` subfolder (or alongside the attack scripts). Figures
 (`.png`) are committed too. The heavy and private artifacts are **not** in git —
 see below.
+
+---
+
+## Repository structure
+
+```
+srw_behaviour/
+├── behaviour/          the behavioural-state analysis (active)
+│   ├── files/          small committed outputs: parameter summaries, prediction tables
+│   └── figures/        figures produced by the analysis scripts themselves
+├── plots/              manuscript figures combining mothers and calves
+├── attack/             gull-attack occurrence and intensity models (dormant)
+├── data/    → symlink  raw, private records (outside git; see setup below)
+├── models/  → symlink  heavy generated objects, ~7 GB (outside git)
+├── CLAUDE.md           working agreement and guidance for Claude Code
+├── ROADMAP.md          open threads: what is in flight and what still needs doing
+└── setup.sh            links the data/model store into the repo (run once)
+```
+
+### What each script does
+
+**`behaviour/` — the analysis in the paper**
+
+| Script | What it does |
+|---|---|
+| `behaviour_mothers_analysis.R` | The mothers pipeline end to end: reads the raw records, recodes behaviour into the 8 categories, builds the Stan data, fits the model, imputes the unobserved behaviours, and computes the predictions and attack effects. |
+| `behaviour_mothers_model.stan` | The mothers model: categorical likelihood on behavioural transitions, with the latent disturbance `z` and year splines. |
+| `behaviour_calves_analysis.R` | The same pipeline for calves (9 years instead of 19). |
+| `behaviour_calves_model.stan` | The calves model — as the mothers one, but with three separate increase parameters and smaller spline bases. |
+| `behaviour_calves_assessing prior for beta.R` | Prior check that settled `beta ~ Normal(0, 1.5)` for calves, comparing calves' and mothers' betas in shared years. |
+| `plots_script_mother calf.R` | Exploratory mother-vs-calf figures (attack scenarios, total effects, `z` dynamics). |
+
+**`plots/` — manuscript figures**
+
+| Script | What it does |
+|---|---|
+| `plots_script.R` | The main manuscript figures: attack scenarios, behaviour by year (disturbed / undisturbed / observed), and the effects on mothers and calves. Defines the shared `theme_mine()`. |
+| `figure_2_etogram.R` | **Figure 2**: stacked-bar etogram by year, mothers and calves, from the model-imputed behaviour. Currently produces `figure_2_etogram_v01.png`. |
+
+**`attack/` — dormant.** `mothers/`, `calves/` and `mothers2/` hold the
+occurrence and intensity models (`*_occurrence.*`, `*_count.*`) for each target,
+`mothers_spline years/` an earlier spline variant, `plots_attack.R` the figures
+combining them, and `occurrence models trials.*` the exploratory fits. See
+[`attack/README.md`](attack/README.md) and `attack/Hoja de ruta` (Spanish).
+
+**Root.** `Supplementary information 1.qmd` (and its rendered
+`Supplementary-information-1.pdf`) is the full model specification cited by the
+manuscript's Methods.
+
+### Figure naming
+
+Manuscript figures are versioned in the file name, `<name>_vNN.png` with a
+zero-padded two-digit number (`_v01`, `_v09`, `_v11`, …). Co-authors revise
+figures a lot, so each new version handed to the manuscript gets a new number and
+earlier files are not overwritten — the file name alone tells you which version
+is the one embedded in the `.docx`. Alternative code for different versions may
+be kept in the plotting scripts.
 
 ---
 

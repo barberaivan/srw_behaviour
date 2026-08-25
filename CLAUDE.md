@@ -22,6 +22,76 @@ is dormant: keep it in the repo for reference, but do not extend, refactor or
 re-run it, and do not spend effort tidying it, unless explicitly asked. Active
 work happens in `behaviour/` and `plots/`.
 
+## Working agreement — how we keep track
+
+These are the ground rules for how work is tracked between sessions. They exist
+because a session can be cut at any moment, and **no chunk of work should be lost
+when that happens**.
+
+### `ROADMAP.md` is the tracker
+
+- Keep `ROADMAP.md` at the repo root up to date **as the work happens**, not at
+  the end. It holds what is currently being done, plus every incomplete item that
+  still needs to be done or reviewed — by **Iván** or by **Meri** (María Piotto,
+  the main co-author). Say which of them an item is waiting on.
+- Write an entry the moment a task is picked up, so that if the session dies, the
+  next one can pick the thread up from the file alone. Note where the work got
+  to, which files it touched, and what is left.
+- It also records decisions already settled, so the reasoning is not
+  rediscovered later.
+
+### Keep going — decide, record, report
+
+Iván asks for **large tasks**, and often will not be around while they run. The
+default is therefore to **keep working, not to stop and ask**.
+
+- When an implementation detail is ambiguous, **decide it yourself** and carry
+  on. Pick the reasonable option, state the assumption, and report the decision
+  afterwards. Do not halt a task to ask for guidance whenever a defensible choice
+  can be made.
+- **Record every doubt and every wall in `ROADMAP.md` as it comes up**, not only
+  at the end of the session. That is what survives if the session is cut: the
+  decision taken, why, and what Iván should look at.
+- **If part of a task is genuinely blocked, move on with the rest.** Finish
+  everything that does not depend on the blocker, and note in the ROADMAP what
+  was left undone and why. Never let one wall stop the whole task.
+- **Always surface the doubts and the decisions to Iván** in the final report,
+  even the ones already written in the ROADMAP. He decides which of them matter;
+  some he will simply close.
+
+### Iván decides when a task is closed
+
+- A **task** is a chunk of instructions from Iván. Only Iván declares it
+  finished — never assume a task is closed because the work looks done.
+- Doubts raised at the end of a task are **not** blockers. Iván may judge them
+  irrelevant and close the task anyway; that is his call, not something to argue
+  or to re-raise later.
+- **Closed tasks come off the ROADMAP.** It is a list of open threads, not a log
+  of finished work — git history is the log. Do not add an item to it for work
+  that has just been declared closed.
+
+### Figures: code in the repo, versioned file names
+
+Most of the work of writing this paper is producing plots. They rarely need heavy
+computation — the models are already fitted, so a figure is normally just
+post-processing of objects in `models/`.
+
+- **Every figure has R code, committed in the repo.** Never leave figure code in
+  a scratch directory or produce a plot that cannot be regenerated from a
+  committed script.
+- **`README.md` must describe the repo structure and say, in one line, what each
+  script does.** Update it whenever a script is added or its purpose changes.
+- **Figure files are versioned: `<name>_vNN.png`**, with a zero-padded two-digit
+  number (`_v01`, `_v09`, `_v11`, …). Co-authors revise figures a lot, so bump
+  the number for every new version handed to the manuscript, and do not overwrite
+  an earlier version's file. The point of the convention is that the file name
+  alone tells you **which version is the one embedded in the `.docx`**, so keep
+  the naming neat and never reuse a number.
+- Keeping alternative code for different versions of a figure is fine and
+  expected. Every so often Iván may ask for the plotting code to be cleaned up so
+  that only the code generating the latest version survives — that is a request,
+  not something to do unprompted.
+
 ## Task workflow — read this first
 
 Most tasks are written in the **manuscript itself**, a Word file kept in the
@@ -57,12 +127,27 @@ A `.docx` is a zip. Read it by extracting the text from `word/document.xml`
 There is no need for the Google Drive connector any more.
 
 **Do not rewrite the `.docx` in place unless explicitly asked.** Editing the XML
-by hand risks damaging formatting, images, comments and tracked changes in a file
-the co-authors are working on. By default, deliver the result of a `[Claude, …]`
-task in the terminal (or as a repo file), quoting the marker it answers so it is
-obvious where the text belongs, and let the user paste it in — using Word's
-tracked changes or a colour if the edit needs to be visible. Never claim an edit
-was made in the manuscript when the text was only printed here.
+by hand risks damaging formatting, images and comments in a file the co-authors
+are working on. By default, deliver the result of a `[Claude, …]` task in the
+terminal (or as a repo file), quoting the marker it answers so it is obvious
+where the text belongs, and let Iván paste it in. Never claim an edit was made in
+the manuscript when the text was only printed here.
+
+**When Iván does ask for the file to be edited**, these are the house rules:
+
+- **Write in teal blue** (`<w:color w:val="008080"/>` on every run) so Claude's
+  contributions are visible at a glance, and **do not use tracked changes**.
+- **Never touch what Iván or a co-author wrote** — only insert new paragraphs.
+  That includes the `[Claude, …]` markers themselves: leave them in place.
+- Match the surrounding formatting: body paragraphs use `<w:pStyle w:val="normal1"/>`,
+  section headings are bold, subsection headings are underlined.
+- Work on a copy: unzip the `.docx`, edit `word/document.xml`, repack, and only
+  then overwrite the original — keeping a backup of the pre-edit file.
+- **Verify before installing the result**: the XML must parse, and every original
+  paragraph must still be present byte-identical and in the same order. Compare
+  against the backup programmatically; do not eyeball it.
+- Rendering the result to PDF (`libreoffice --headless --convert-to pdf`) and
+  looking at the pages is the cheapest way to catch a broken table or image.
 
 ### Language: read Spanish, think and write English
 
@@ -147,10 +232,10 @@ saves the path to gitignored `.local-paths`). See `README.md` for details.
 
 ## Housekeeping
 
-- Open threads for the manuscript are tracked in `ROADMAP.md` at the repo root.
-  The paper is iterative — co-authors ask for things as it goes — so items there
-  get done **as needed**, not as a checklist to burn down. It also records
-  decisions already settled, so the reasoning is not rediscovered later.
+- Open threads for the manuscript are tracked in `ROADMAP.md` at the repo root —
+  see **Working agreement** above for how it is kept. The paper is iterative —
+  co-authors ask for things as it goes — so items there get done **as needed**,
+  not as a checklist to burn down.
 - Attack-specific open decisions live in `attack/README.md` (that analysis is
   dormant — see above).
 - Commit/push only when asked. The remote is SSH
