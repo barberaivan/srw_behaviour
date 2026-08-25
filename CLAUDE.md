@@ -161,6 +161,15 @@ always English, whatever the language of the instruction that asked for it. Repl
 to the user in the language they wrote in, but never let Spanish source material
 carry through into the manuscript.
 
+### No em-dashes
+
+**Never use em-dashes (`—`) in anything written for the paper**: manuscript text,
+figure titles, axis labels, legends, captions and annotations included. They read
+as machine-written. Use a comma, a colon, parentheses or a full stop instead, and
+where a range or a minus sign is meant, use the proper character.
+
+This applies to the deliverables, not to notes in this repo.
+
 ### Reference for the writing — "la tesis"
 
 When writing or revising manuscript text, the best reference for tone, structure
